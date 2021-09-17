@@ -25,7 +25,6 @@ jobs:
 
     # VALIDATE
     - name: Validate Template
-      uses: hashicorp/packer-github-actions@master
       run: packer validate -syntax-only ./packer/
 
     # BUILD
