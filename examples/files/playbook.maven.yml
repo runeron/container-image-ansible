@@ -1,0 +1,17 @@
+---
+- name: Example PB | Download Maven Artifact(s)
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - local_action:
+      module: community.general.maven_artifact
+      repository_url: https://maven.distrepos.com/snapshot
+      username: dist
+      password: <super-secret-password>
+      group_id: com.example
+      artifact_id: application-name
+      version: latest
+      dest: /local
+...

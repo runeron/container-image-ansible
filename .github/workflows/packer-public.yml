@@ -1,0 +1,40 @@
+# Documentation:
+# - https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+# - https://github.com/hashicorp/packer-github-actions
+---
+name: Packer Public Pipeline
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    # Checkout files
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    # FORMATTING
+    - name: Check Formatting
+      run: packer fmt -check ./packer/
+
+    # INITIALIZE
+    - name: Fix Template
+      run: packer init ./packer/
+
+    # VALIDATE
+    - name: Validate Template
+      uses: hashicorp/packer-github-actions@master
+      run: packer validate -syntax-only ./packer/
+
+    # BUILD
+    - name: Build Artifact
+      run: packer build -color=false -on-error=abort ./packer/
+      env:
+        PACKER_LOG: 1
+        PKR_VAR_container_name: aiqu/container-image-ansible
+        PKR_VAR_container_registry_url: 'https://index.docker.io/v1/'
+        PKR_VAR_container_registry_user: ${{ secrets.CONTAINER_REGISTRY_USER }}
+        PKR_VAR_container_registry_token: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+...

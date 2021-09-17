@@ -1,0 +1,12 @@
+---
+version: '3.9'
+
+services:
+  # Prebuilt Ansible Container
+  ansible:
+    image: local/ansible:alpine
+    volumes:
+    - "./files:/files:rw"
+    environment:
+      PATH: /usr/bin/ansible:$PATH
+    command: ["-c","ansible-playbook files/playbook.debug.yml"]
