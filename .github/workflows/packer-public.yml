@@ -33,7 +33,7 @@ jobs:
       env:
         PACKER_LOG: 1
         PKR_VAR_container_name: aiqu/container-image-ansible
-        PKR_VAR_container_registry_url: 'https://index.docker.io/v1'
+        #PKR_VAR_container_registry_url: 'https://index.docker.io/v1'
         PKR_VAR_container_registry_user: ${{ secrets.CONTAINER_REGISTRY_USER }}
         PKR_VAR_container_registry_token: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
 ...

@@ -22,5 +22,5 @@ variable container_registry_token {
 variable container_registry_url {
   description = "Container registry URL (for pushing image(s). Defaults to https://hub.docker.com/)"
   type        = string
-  default     = "https://index.docker.io/v1/"
+  default     = ""
 }
