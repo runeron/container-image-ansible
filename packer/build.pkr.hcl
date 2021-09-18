@@ -185,7 +185,7 @@ build {
     # E.g. docker.io, ghcr.io
     post-processor "docker-push" {
       name = "push"
-      
+
       login_username = local.container_registry_user
       login_password = local.container_registry_token
       login_server   = local.container_registry_url
