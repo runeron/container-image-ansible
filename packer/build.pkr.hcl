@@ -186,6 +186,7 @@ build {
     post-processor "docker-push" {
       name = "push"
 
+      login          = true
       login_server   = local.container_registry_url
       login_username = local.container_registry_user
       login_password = local.container_registry_token

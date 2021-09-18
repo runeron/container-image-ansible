@@ -8,15 +8,20 @@ target_image ?= local/ansible
 # =================================================================================================
 # DEFINE PACKER VARIABLES
 # =================================================================================================
-export PKR_VAR_container_name    := target_image
-#PKR_VAR_container_registry_url   := 
-#PKR_VAR_container_registry_token := 
-#PKR_VAR_container_registry_user  := 
+export PKR_VAR_container_name           := ${target_image}
+export PKR_VAR_container_registry_url   := registry.hub.docker.com
+#export PKR_VAR_container_registry_url   := 
+#export PKR_VAR_container_registry_token := 
+#export PKR_VAR_container_registry_user  := 
 
 # =================================================================================================
 # DEFINE PACKER GOALS
 # =================================================================================================
-PHONY: fmt validate init build push
+PHONY: info fmt validate init build push
+
+info:
+	@echo IMAGE: ${PKR_VAR_container_name}
+	@echo REGISTRY: ${PKR_VAR_container_registry_url}
 
 fmt:
 	@packer fmt -check ./packer/
@@ -28,7 +33,7 @@ init:
 	@packer init ./packer/
 
 build:
-	@packer build -except=push -color=false -on-error=abort ./packer/
+	@packer build -except=push -color=false -on-error=abort -only=*.ALPINE ./packer/
 
 push:
-	@packer build -color=false -on-error=abort ./packer/
+	@packer build -only=*.ALPINE -color=true -on-error=abort ./packer/

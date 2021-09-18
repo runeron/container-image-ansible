@@ -28,14 +28,11 @@ jobs:
       run: packer validate -syntax-only ./packer/
 
     # BUILD
-    - name: Build Artifact
-      run: packer build -only=*.ALPINE -color=false -on-error=abort ./packer/
+    - name: Build Artifact (Docker Hub)
+      run: packer build -only=*.ALPINE,*.DEBIAN,*.ROCKY -color=false -on-error=abort ./packer/
       env:
         PACKER_LOG: 1
-        #PKR_VAR_container_name: "ghcr.io/runeron/ansible"
-        #PKR_VAR_container_registry_user: "${{ secrets.GITHUB_USER }}"
-        #PKR_VAR_container_registry_token: "${{ secrets.GITHUB_TOKEN }}"
-        PKR_VAR_container_name: "aiqu/container-image-ansible"
+        PKR_VAR_container_name: "registry.hub.docker.com/aiqu/container-image-ansible"
         PKR_VAR_container_registry_url: "registry.hub.docker.com"
         PKR_VAR_container_registry_user: "${{ secrets.CONTAINER_REGISTRY_USER }}"
         PKR_VAR_container_registry_token: "${{ secrets.CONTAINER_REGISTRY_TOKEN }}"
