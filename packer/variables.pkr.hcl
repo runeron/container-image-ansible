@@ -10,13 +10,13 @@ variable container_name {
 variable container_registry_user {
   description = "Container registry username (for pushing image(s))"
   type        = string
-  default     = "JohnDoe"
+  default     = ""
 }
 
 variable container_registry_token {
   description = "Container registry secret (for pushing image(s))"
   type        = string
-  default     = "TopSecretPassword"
+  default     = ""
 }
 
 variable container_registry_url {

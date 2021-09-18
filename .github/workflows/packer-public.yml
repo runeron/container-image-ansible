@@ -36,7 +36,7 @@ jobs:
         #PKR_VAR_container_registry_user: "${{ secrets.GITHUB_USER }}"
         #PKR_VAR_container_registry_token: "${{ secrets.GITHUB_TOKEN }}"
         PKR_VAR_container_name: "aiqu/container-image-ansible"
-        PKR_VAR_container_registry_url: 'https://docker.io'
+        PKR_VAR_container_registry_url: "registry.hub.docker.com"
         PKR_VAR_container_registry_user: "${{ secrets.CONTAINER_REGISTRY_USER }}"
         PKR_VAR_container_registry_token: "${{ secrets.CONTAINER_REGISTRY_TOKEN }}"
 ...

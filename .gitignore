@@ -1,5 +1,6 @@
 # Cache objects
 **/packer_cache/
+**/.secrets/*
 
 # Crash log
 crash.log
