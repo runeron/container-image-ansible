@@ -5,8 +5,8 @@
 locals {
   container_name           = var.container_name
   container_registry_url   = var.container_registry_url
-  container_registry_token = var.container_registry_token
   container_registry_user  = var.container_registry_user
+  container_registry_token = var.container_registry_token
 }
 
 # =================================================================================================
@@ -61,7 +61,7 @@ build {
   # PROVISIONING - Install OS packages
   # -------------------------------------------------------------------------------------------------
 
-  # DEBIAN
+  # -- DEBIAN
   provisioner "shell" {
     only = [
       "docker.UBUNTU",
@@ -80,7 +80,7 @@ build {
     ]
   }
 
-  # REDHAT
+  # -- REDHAT
   provisioner "shell" {
     only = [
       "docker.ROCKY",
@@ -96,7 +96,7 @@ build {
     ]
   }
 
-  # APK
+  # -- APK
   provisioner "shell" {
     only = [
       "docker.ALPINE",
@@ -111,13 +111,12 @@ build {
     ]
   }
 
-  # PACMAN
+  # -- PACMAN
   provisioner "shell" {
     only = [
       "docker.ARCH",
     ]
 
-    #inline_shebang = "/usr/sbin/bash -e"
     inline = [
       <<-PROVISIONING
       pacman -Sy --sysupgrade --quiet --noconfirm
@@ -133,7 +132,7 @@ build {
   # PROVISIONING - Add Ansible collections
   # -------------------------------------------------------------------------------------------------
 
-  # Adds ~12MB
+  # This collection adds ~12MB to the image
   provisioner "shell" {
     #only = ["NaN"]
     inline = [
@@ -146,7 +145,7 @@ build {
   # -------------------------------------------------------------------------------------------------
 
   provisioner "file" {
-    only        = ["NaN"]
+    only        = ["NaN"] # Unused
     direction   = "upload"
     source      = "./context/docker-entrypoint.sh"
     destination = "/usr/local/bin/docker-entrypoint.sh"
@@ -154,7 +153,7 @@ build {
 
   # Using python venv
   provisioner "file" {
-    only        = ["NaN"]
+    only        = ["NaN"] # Unused
     direction   = "upload"
     source      = "./context/docker-entrypoint.venv.sh"
     destination = "/usr/local/bin/docker-entrypoint.sh"
@@ -164,6 +163,7 @@ build {
   # POST-PROCESSORS - Tag containers
   # -------------------------------------------------------------------------------------------------
 
+  # Tags images with: Base-image, timestamp & latest
   post-processors {
     post-processor "docker-tag" {
       repository = local.container_name
@@ -176,15 +176,16 @@ build {
 
     # Tag only a selected 'primary' image as 'latest'
     post-processor "docker-tag" {
-      only       = ["docker.DEBIAN"]
-      repository = local.target_image
+      only       = ["docker.ALPINE"]
+      repository = local.container_name
       tags       = ["latest"]
     }
 
-    # Push images
+    # Push images:
+    # E.g. docker.io, ghcr.io
     post-processor "docker-push" {
       name = "push"
-
+      
       login_username = local.container_registry_user
       login_password = local.container_registry_token
       login_server   = local.container_registry_url
